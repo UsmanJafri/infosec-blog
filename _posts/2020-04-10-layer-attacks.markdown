@@ -17,7 +17,7 @@ In this post, I will be exploring various network attacks that can be carried ou
 
 #### Wiretapping
 
-1. Wiretapping involves attaching a physical probe/connection onto an electrical/optical cable with the intent of gaining access to all the bits that travel on the cable. Radio-based mediums can be tapped too using compatible radio-frequency antenna or receiver.
+Wiretapping involves attaching a physical probe/connection onto an electrical/optical cable with the intent of gaining access to all the bits that travel on the cable. Radio-based mediums can be tapped too using compatible radio-frequency antenna or receiver.
 
 <img src="https://i.imgur.com/a6a1Dje.jpg" alt="Wiretap" width="200">
 
