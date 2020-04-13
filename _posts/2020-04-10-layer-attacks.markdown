@@ -23,7 +23,7 @@ Wiretapping involves attaching a physical probe/connection onto an electrical/op
 
 [Image Source: Amazon.com]
 
-##### Service Disruption
+#### Service Disruption
 
 Service Disruption involves causing direct damage to the physical media carrying network packets with the intent of causing a *denial-of-service*. Service disruption methods include: damaging cables, injecting bogus signals into the medium using a wiretap or by broadcasting on the same radio frequency.
 
