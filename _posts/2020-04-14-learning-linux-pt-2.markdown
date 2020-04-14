@@ -45,7 +45,8 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 8. Replace the contents of `/var/www/html` with a website of your choice! For example, if we create a file `/var/www/html/index.html` with the content:
 
 
-    ```<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    ```
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml">
         <h1>
             Hello world!
