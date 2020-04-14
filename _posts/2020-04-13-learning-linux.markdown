@@ -8,6 +8,8 @@ Hello!
 
 I've been taking the [LinuxCBT Ubu12x Edition](https://www.linuxcbt.com/products_linuxcbt_ubu12x_edition) course and learned a few useful tricks that I would like to share here!
 
+Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**.
+
 ## Generating SSH Keys
 
 1. Open a Terminal.
