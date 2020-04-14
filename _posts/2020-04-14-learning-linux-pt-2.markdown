@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Learning Linux! (Part 2)"
-date:   2020-04-14 21:15:00 +0500
+date:   2020-04-14 21:36:00 +0500
 categories: linux
 ---
 Hello!
@@ -16,25 +16,32 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 
 2. Run the following command to install the **Apache** web server.
 
-    > sudo apt update && sudo apt install apache2
+    ```
+    sudo apt update && sudo apt install apache2
+    ```
 
 3. Run the following command to check whether the Apache service is running:
-
-    > sudo systemctl status apache2
-
+    
+    ```
+    sudo systemctl status apache2
+    ```
     ![sudo systemctl status apache2](https://i.imgur.com/3vqA80Q.png)
 
 4. **[OPTIONAL]** The Apache server should have started automatically. If not, use the following command to manually start it:
 
-    > sudo systemctl start apache2
+    ```
+    sudo systemctl start apache2
+    ```
 
 5. Run the following command to check what port the Apache server is listening on:
 
-    > sudo lsof -i | grep "apache2"
+    ```
+    sudo lsof -i | grep "apache2"
+    ```
 
     By default, the Apache service listens on port 80.
 
-    ![sudo lsof -i | grep "apache2"](https://i.imgur.com/T5mS59t.png)
+    ![sudo lsof"](https://i.imgur.com/T5mS59t.png)
 
 6. Open a web-browser and visit `http://localhost:80`. You should see the *Apache2 Ubuntu Default Page*
 
@@ -60,7 +67,9 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 
 9. Finally to stop the Apache service run:
 
-    > sudo systemctl stop apache2
+    ```
+    sudo systemctl stop apache2
+    ```
 
 10. It is very likely that the TCP port 80 is closed for access from the internet. In order to make your website accessible from the internet, you will have to forward TCP port 80 through your router's management interface. Since this process varies from router to router, instead of discussing the port forwarding process here, I would recommend you view the excellent guides at [PortForward](https://portforward.com/router.htm).
     
@@ -69,7 +78,9 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 1. Open a Terminal.
 2. Run the following command, to view all partitions and connected drives.
 
-    > sudo fdisk -l
+    ```
+    sudo fdisk -l
+    ```
 
     ![sudo fdisk -l](https://i.imgur.com/BVGyoyB.png)
     
@@ -79,23 +90,31 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 
 3. Run the following command to open the default partitioning tool bundled with Ubuntu.
 
-    > sudo parted
+    ```
+    sudo parted
+    ```
 
     ![sudo parted](https://i.imgur.com/WIndody.png)
     
 4. Run the following command to select a physical disk. Replace `/dev/sda` with the a physical drive's name you want to create a partition in. The name can be found from **Step 1**:
 
-    > select /dev/sda
+    ```
+    select /dev/sda
+    ```
 
 5. Run the following command to give the new partition a `msdos` type label:
 
-    > mklabel msdos
+    ```
+    mklabel msdos
+    ```
 
     Other label types such as `bsd`, `gpt` and `mac` are also viable options, however `msdos` is the most universally supported.
 
 6. Run the following command to display available space in the selected drive:
 
-    > print free
+    ```
+    print free
+    ```
 
     Please note the **Start** and **End** values of free space where you would like to create the parition. **This will be required later!**
 
@@ -103,7 +122,9 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 
 7. Run the following command to create a **Primary** parition. Note that you can create a `logical` partition if you do not intend to make the new partition bootable.
 
-    > mkpart primary
+    ```
+    mkpart primary
+    ```
 
 8. You will now be prompted to enter a partition type. For Linux use, `ext4` is recommended. However, personally, I prefer `ntfs` because it allows access to the partition from both Linux and Windows-based systems in a multi-boot environment. `ext4` isn't supported by Windows, however `ntfs` is fully-supported by both Windows and Linux
 
@@ -116,29 +137,39 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 1. Open a Terminal.
 2. Run the following command, to view all partitions and their UUIDs:
 
-    > sudo blkid
-    
+    ```
+    sudo blkid
+    ```
+        
     Note down the UUID of the partition you would like to automatically mount at startup.
 
 3. Run the following command to find the current user's user ID:
 
-    > id -u $USER
+    ```
+    id -u $USER
+    ```
 
     Note down the printed user ID.
 
 4. Run the following command to find the current user's group ID:
 
-    > id -g $USER
+    ```
+    id -g $USER
+    ```
 
     Note down the printed group ID.
     
 5. Open the `/etc/fstab` in a code-editor of your choice. I will be using *Visual Studio Code*:
 
-    > code /etc/fstab
+    ```
+    code /etc/fstab
+    ```
 
 6. Copy-paste the following line at the end of the file:
 
-    > UUID=<YOUR_UUID> <YOUR_MOUNT_PATH> <PARTITION_TYPE> defaults 0 0
+    ```
+    UUID=<YOUR_UUID> <YOUR_MOUNT_PATH> <PARTITION_TYPE> defaults 0 0
+    ```
 
     - Replace `<YOUR_UUID>` with the UUID from **Step 2**.
     - Replace `<YOUR_MOUNT_PATH>` with the path at which you would like to mount your partition. I personally like to mount partitions in `/media/username/`.
@@ -146,7 +177,9 @@ Please note that the following content has been tested on **Ubuntu 18.04.4 LTS**
 
 7. If your partition type is `ntfs`, please replace `defaults` with the following string:
 
-    > uid=<YOUR_UID>,gid=<YOUR_GID>,umask=0022,auto,rw
+    ```
+    uid=<YOUR_UID>,gid=<YOUR_GID>,umask=0022,auto,rw
+    ```
 
     - Replace `<YOUR_UID>` with the user ID from Step 3.
     - Replace `<YOUR_GID>` with the group ID from Step 4.
