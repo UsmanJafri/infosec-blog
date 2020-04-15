@@ -1,0 +1,134 @@
+---
+layout: post
+title:  "A deep-dive into the OSI model"
+date:   2020-04-15 21:15:00 +0500
+categories: network
+---
+Hello!
+
+In this post, I will be exploring the *Open Systems Interconnection (OSI)* model for implementing computer networks and each of its layers in detail.
+
+It is important to note that while the *TCP/IP* model is more commonly used, both the OSI and TCP/IP model provide **exactly** the same set of services. The only different between them is how different responsiblities are distributed across layers.
+
+![OSI vs TCP/IP](https://i.imgur.com/lqBDYqk.png)
+
+[Image credit: guru99.com]
+
+## Layer 1 (Physical)
+
+**The lowest layer of the OSI model is responsible for carrying raw bits on a physical medium.** The physical medium could be: electrical wire, radio waves or optical fibre. Transmission medium standards such as types of connectors, wire specifications and signalling modes are all defined at this layer.
+
+- **Data unit:** Bits
+- **Delivery type:** Local
+
+![Physical](https://i.imgur.com/qcJZ4jk.png)
+
+[Image credit: web.stanford.edu]
+
+## Layer 2 (Data Link)
+
+The second layer of the OSI model is responsible for providing **local delivery** of frames between two **directly-connected** devices. The Data Link layer has two components:
+
+1. **Media Access Control (MAC)**
+
+    The MAC component controls the transmission and reception from the physical medium of layer 1. It employs either the *Carrier Sense Multi Access with Collision Detection (CSMA/CD)* or *Carrier Sense Multi Access with Collision Avoidance (CSMA/CA)* algorithm for this purpose.
+    
+    Its main responsibilites include:
+    
+    1. Check whether the phyiscal link is free. If yes, transmit, otherwise receive.
+
+    2. Check if any collision occoured while transmitting. If yes, it sends a *jam signal* to instruct other hosts to stop transmitting, it then times out for a random period of time and then attempts retransmission.
+
+2. **Logical link Control (LLC)**
+
+    The LLC component provides the following capabilities:
+
+    1. **Flow control** - this prevents a fast sender from overwhelming a slow receiver. Note that in actual network implementations, this LLC component is rarely used. Flow control is generally provided by the Transport layer of the OSI model.
+
+    2. **Error checking** - this allows retransmission of corrupt frames. Like flow control, this is also rarely used. In actual networks, error checking and retransmission is usually done in an *end-to-end* manner between two hosts. However, in case of highly-lossy links such as *WiFi*, error checking of the LLC component is commonly used.
+
+    3. **Multiplexing of layer 3 protocols** - this allows identifying which layer 3 protocol is encapsulated in a frame's data unit.
+
+- **Data unit:** Frames
+- **Delivery type:** Local
+
+Here's a flowchart showing the CSMA/CD algorithm in detail:
+
+![CSMA/CD](https://i.imgur.com/4fNpBY4.png)
+
+[Image credit: orca-project.eu]
+
+## Layer 3 (Network)
+
+Perhaps the most important layer of the OSI model, the third layer is responsible for providing **global** delivery of datagrams between two devices, that are not necessarily **directly** connected in a network. The two devices may be in different networks with multiple routers and switches in between them, but as long as there is a single path available the Network layer can ***try (best-effort)*** to deliver datagrams.
+
+The network layer provides a best-effort delivery of datagrams with no gurantees on the following:
+
+1. **Ordering** - datagrams may not necessarily be delivered in the same order as they were sent.
+
+2. **Integrity** - datagrams may be corrupt.
+
+3. **Reliability** - datagrams may be dropped and hence never make it to the receiver.
+
+Other than datagram forwarding, the Network layer is also responsible for **host addressing**. In the **Internet Protocol (IP)** each device on a network is identified using a 32-bit address (*IPv4*) or a 128-bit address (*IPv6*).
+
+- **Data unit:** Datagrams
+- **Delivery type:** Global
+
+![IP Header](https://i.imgur.com/xDDbnKF.png)
+
+[Image credit: juniper.net]
+
+## Layer 4 (Transport)
+
+The fourth layer of the OSI model is responsible for providing **global delivery** of segments between two devices, that are not necessarily directly connected in a network.
+
+The network layer can provide both of the following:
+
+1. Best-effort delivery of segments with no gurantees on ordering, integrity, reliability and with no congestion and flow control. This is done using the **User Datagram Protocol (UDP)**.
+
+2. Reliable, in-order, intact delivery of segments with both, flow and congestion control. This is done using the **Transmission Control Protocol (TCP)**.
+
+While UDP and TCP are the most common level 4 protocols, there are other lesser-known transport protocols such as *Stream Control Transmission Protocol (SCTP)* which is used in cellular networks.
+
+- **Data unit:** Segments
+- **Delivery type:** Global
+
+## Layer 5 (Session)
+
+The fifth layer of the OSI model is responsible for setting up, breaking down and managing a communication session for communication between two hosts.
+
+The fifth layer controls the following session-specific parameters:
+
+1. Communication mode (full-duplex or half-duplex)
+2. Checkpointing interval (for fault-tolerance)
+3. Authentication (for session security)
+
+It is important to note that in the TCP/IP model, the Session layer responsibilites are bundled into the Application later.
+
+- **Data unit:** Application Data
+- **Delivery type:** Global
+
+## Layer 6 (Presentation)
+
+The sixth layer of the OSI model, also commonly known as the *Syntax layer*, is responsible for managing how application data is formatted and serialized in a packet.
+
+The Presentation layer manages the following data presentation parameters:
+
+1. Encryption/Decryption (for security of data)
+2. Compression (for bandwidth management)
+3. Serialization (for managing how complex multi-dimensional data structures are to be represented as a linear array of 1s and 0s)
+
+- **Data unit:** Application Data
+- **Delivery type:** Global
+
+Like Layer 5, the Presentation layer responsibilites are bundled into the Application layer in the TCP/IP model.
+
+## Layer 7 (Application)
+
+The top-most layer of the OSI model is responsible for providing network access to end-users. It abstracts away most the technicalities associated with network communication.
+
+Common layer 7 protocols include *Hyper Text Transfer protocol (HTTP)*, *File Transfer Protocol (FTP)*, *BitTorrent* protocol and many custom application-specific protocols such as those used by instant messaging applications.
+
+- **Data unit:** Application Data
+- **Delivery type:** Global
