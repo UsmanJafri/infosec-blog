@@ -8,7 +8,7 @@ Hello!
 
 In this post, I will be exploring the *Open Systems Interconnection (OSI)* model for implementing computer networks and each of its layers in detail.
 
-It is important to note that while the *TCP/IP* model is more commonly used, both the OSI and TCP/IP model provide **exactly** the same set of services. The only different between them is how different responsiblities are distributed across layers.
+It is important to note that while the *TCP/IP* model is more commonly used, both the OSI and TCP/IP model provide **exactly** the same set of services. The only difference between them is how responsiblities are distributed across layers.
 
 ![OSI vs TCP/IP](https://i.imgur.com/lqBDYqk.png)
 
