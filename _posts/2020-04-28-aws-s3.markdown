@@ -1,0 +1,179 @@
+---
+layout: post
+title:  "Exploring Amazon S3"
+date:   2020-04-28 22:00:00 +0500
+categories: aws
+---
+Hello!
+
+I've been preparing for the ***Amazon Web Services (AWS)*** Solutions Architect certification and recently learned about the S3 storage service, which I will be exploring in today's blog in detail.
+
+![](https://imgur.com/1oNCT6P.jpg)
+
+## What is Amazon S3?
+
+Amazon S3, short for Amazon Simple Storage Service is an object-based cloud storage service provided by Amazon under the Amazon Web Services (AWS) family of cloud products.
+
+The S3 service aims to provide the following gurantees:
+
+1. Secure
+2. Highly available
+3. Scalable
+4. High performance
+5. Durability (99.999999999% - Amazon's *11 9's* promise!)
+
+## Some specifics
+
+- Files can range from 0 bytes to 5 terabytes in size.
+- Virtually unlimited storage
+- Collections of files are stored in objects called ***Buckets***
+- All buckets on the S3 platform exist in a single global namespace and hence each bucket should have a unique name, **globally**.
+- A unique URL is generated against each bucket.
+
+    ![](https://imgur.com/n6rTV5f.jpg)
+
+    [Image source: Amazon.com]
+
+## Data consistency model
+
+The Amazon S3 platform provides the following two data consistency gurantees:
+
+1. **Read after Write consistency for newly-uploaded files.**
+
+    For example, if I upload a new file titled *test.txt* to an empty bucket, and immediately try to access *test.txt*, I will be able to access the file with no issues.
+
+2. **Eventual consistency for updates and deletes.**
+
+    For example, I now make an edit to the previously-uploaded *test.txt* and re-upload it to my bucket. Now, when I try to immediately access *test.txt*, it is not guranteed what version I will be served, it may either be the old version or the new. However, ***eventually***, I will always be served the latest version of *test.txt*.
+
+    Similarly, when I delete *test.txt* from the bucket, it may still be stored on the S3 servers for some time, however, ***eventually***, the file will be deleted.
+
+## Features
+
+1. **Versioning** - allows multiple versions of the same object to be stored in the S3 bucket.
+
+2. **Static website hosting** - the S3 service allows hosting static HTML web pages with no support for server-side scripting for dynamic content such as PHP.
+
+3. **Access Control Lists (ACLs)** - provide control of access to specific files within a bucket.
+
+4. **Bucket Policy** - similar to ACLs, however these implement bucket-wide policies as compared to object-specific policies in case of ACLs.
+
+5. **Server-side encryption** - controls whether data within S3 servers is encrypted before storage.
+
+## Demo and Tutorial
+
+#### Creating an Amazon S3 bucket
+
+1. From the **AWS Services** page navigate to **S3** under the **Storage** category.
+
+    ![](https://imgur.com/VVT24oM.jpg)
+
+2. Click **Create bucket**.
+
+    ![](https://imgur.com/84k0LUB.jpg)
+
+2. In the **Create bucket** page, do the following:
+
+    i. Choose a unique *Bucket name*.
+
+    ii. Select the **Region** where you would like the bucket to be stored.
+
+    ![](https://imgur.com/5BPxqKz.jpg)
+
+    iii. Configure access to bucket via ACLs or Bucket Policy.
+
+    ![](https://imgur.com/aYbtfnd.jpg)
+
+3. Finally click **Create bucket**.
+
+    ![](https://imgur.com/ckO5KE2.jpg)
+
+4. The bucket is created:
+
+    ![](https://imgur.com/nxlQod4.jpg)
+
+#### Enabling bucket access logging
+
+1. Repeat the bucket creation procedure described in the previous section to create a bucket for log storage.
+
+2. From the bucket homepage, navigate to **Properties**
+
+3. Click on the **Server access logging** tile.
+
+    ![](https://imgur.com/31FUeuR.jpg)
+
+4. Click **Enable logging**.
+
+5. In the **Target bucket** section choose the bucket you created in *Step 1*.
+
+    ![](https://imgur.com/M9FwnYu.jpg)
+
+6. In the **Target prefix** section choose a prefix that you want to prepend to all log files for easy filtering.
+
+
+7. Finally press save!
+
+#### Enabling object versioning
+
+1. From the bucket homepage, navigate to **Properties**.
+
+2. Click on the **Versioning** tile.
+
+    ![](https://imgur.com/yj7OiNA.jpg)
+
+3. Click **Enable versioning**.
+
+4. Click **Save**.
+
+5. To see versioning in effect lets upload an empty text file titled *test.txt*.
+
+    ![](https://imgur.com/jeZSiEk.jpg)
+
+6. Now let's write `Hello World` in *test.txt* and re-upload it our bucket.
+
+    ![](https://imgur.com/SjcOXAK.jpg)
+
+7. In order to browse the two versions of *test.txt*, do one of the following:
+
+    i. Single click the file, click **Latest version**, and select the desired version from the drop-down menu and press **Download**.
+
+    ![](https://imgur.com/ejj4kMG.jpg)
+
+    ii. Switch the **Versions** slider to **Show**, you will now see two entries under *test.txt*, download whichever version is required.
+
+    ![](https://imgur.com/TSQR3lO.jpg)
+
+    ![](https://imgur.com/il6fZXb.jpg)
+
+#### Static Website Hosting
+
+1. Let's first create an HTML file titled *index.html* with the following contents:
+
+    ```
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h1>
+            Hello world!
+        </h1>
+    </html>
+    ```
+
+2. Upload *index.html* to the bucket.
+
+3. From the bucket homepage, navigate to **Properties**.
+
+4. Check the **Use this bucket to host a website** combo box.
+
+    ![](https://imgur.com/uAkZtug.jpg)
+
+5. In the **Index document** field, select *index.html*.
+
+6. In the **Error document** field, select an HTML file that you want to serve in case of an error, if you did not create an error file, select *index.html*.
+
+7. Note down the **Endpoint** URL.
+
+8. Click **Save**.
+
+9. Visit the endpoint URL to view the hosted website!
+
+    ![](https://imgur.com/meTPRNg.jpg)
