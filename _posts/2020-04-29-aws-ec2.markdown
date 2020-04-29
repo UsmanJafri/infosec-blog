@@ -1,0 +1,250 @@
+---
+layout: post
+title:  "Exploring Amazon EC2"
+date:   2020-04-29 22:00:00 +0500
+categories: aws
+---
+Hello!
+
+I've been preparing for the ***Amazon Web Services (AWS)*** Solutions Architect certification and recently learned about Amazon's EC2 cloud compute service, which I will be exploring in today's blog in detail.
+
+
+## What is Amazon EC2?
+
+Amazon EC2, short for Amazon Elastic Clould is a cloud-based service that provides scalable compute capacity.
+
+Amazon EC2 is part of the *Amazon Web Services (AWS)* family of cloud products. EC2 aims to reduce the time required to obtain and setup servers by providing virtual machine instances in the cloud. The compute capacity of these instances is resizable and can be easily scaled up or down, as the user's application requirements dynamically change.
+
+EC2 aims to be as cost-effective for consumers as possible by charging consumers for the compute capacity they consume rather than the cost of the infrasturture itself. For consumers, this lower cost of using EC2 versus the cost of setting up a dedicated server themselves, along with the EC2's seamless integration with other AWS products such as CloudFront, Elastic Load Balancing and more, make Amazon EC2 the no-brainer choice for seamlessly deploying web-based services.
+
+#### EC2 Tiers
+
+EC2 offers the following pricing tier options:
+
+1. **On-demand:** allows a consumer to only pay for the EC2 instances they use. The consumer is charged per-hour or per-second of compute resources used, with no additional costs.
+
+2. **Reserved Instances (RI):** allow a consumer to reserve a fixed compute capacity in the AWS infrastruture, for a pre-defined period of time, usually 1 or 3 years. RI-pricing have lower hourly costs than *On-demand pricing*.
+
+3. **Spot instances:** allow consumers to utilize unused EC2 capacity in the AWS infrastructure at upto 90% off the standard *On-demand pricing*. However, Spot instances are not always guranteed to be available and typically recommended non-sensitive, stateless and fault-tolerant applications.
+
+4. **Dedicated Hosts:** allow a consumer to reserve complete physical servers in the AWS infrasture. This allows greater software choices for the consumer as they are free to use their personal software licenses rather than relying on those that AWS provides.
+
+#### EC2 Instance Types
+
+The EC2 service offers various server instances types that are designed for specific use cases.
+
+| Instance Type | Purpose | Typical use cases |
+|---|---|---|
+| T3, T2 and T2a | General purpose |  Web servers, application testing |
+| G3 and G4 | Graphics | Video encoding, 3D animation rendering |
+| F1 | Field Programmable Gate Array (FPGA) | Big data |
+| R4, R5, R5a, R5n and X1 | Memory intensive | In-memory caches, In-memory databases |
+| C4, C5, C5n | Compute intensive | Scientific modelling, High-performance computing (HPC), Game servers |
+| H1 and D2 | HDD storage optimized | File servers, data storage |
+| I3 and I3en | NVME SSD storage optimized | Databases where random read/write latencies are crucial |
+
+## What is Amazon EBS?
+
+Amazon EBS, short for Amazon Elastic Block Storage, is another cloud-based service in the AWS family of products. EBS provides virtual disks for storage with EC2 server instances.
+
+#### EBS Volume Types
+
+1. **GP2**
+
+    - General Purpose
+    - Solid State
+    - Default storage method for EC2 instances
+    - 1 GB – 16 TB
+    - Max IOPS/Volume: 16,000
+    
+2. **IO1**
+
+    - Input/Output Operations optimized
+    - Solid State
+    - Useful for latency-sensitive applications such as databases
+    - 4 GB – 16 TB
+    - Max IOPS/Volume: 64,000
+
+3. **ST1**
+    - Throughput Optimized
+    - Hard Disk
+    - Useful for throughput-insensitive workloads such as log processing, data storage
+    - 500 GB – 16 TB
+    - Max IOPS/Volume: 500
+
+4. **SC1**
+    - ***Cold*** storage
+    - Hark Disk
+    - Useful for storage in applications that access storage very infrequently
+    - 500 GB – 16 TB
+    - Max IOPS/Volume: 250
+
+## Demo and Tutorial
+
+## Creating an EC2 Instance
+
+1. From the **AWS Services** page navigate to **EC2** under the **Compute** category.
+
+    ![](https://imgur.com/OKXNcNk.jpg)
+
+2. In the top-right corner of the screen, select the region where you would like to deploy your EC2 instance.
+
+    ![](https://imgur.com/aPfTzET.jpg)
+
+3. In the EC2 homepage, scroll down and click the **Launch instance** button. This will open a drop-down menu, select **Launch instace**.
+
+    ![](https://imgur.com/mGFngyS.jpg)
+
+4. In the **Choose an Amazon Machine Image (AMI)** page, do the following:
+
+    ![](https://imgur.com/PKnYOpy.jpg)
+
+    i. Select the AMI you would like to deploy. I will be using **Ubuntu Server 18.04 LTS (HVM), SSD Volume Type**.
+
+    ii. Select the OS architecture in the combo box. I will be using **64bit (x86)**.
+
+    iii. Press the **Select** button.
+
+5. In the **Choose an Instance Type** page, view the table and select an Instance Type that is suitable for your application's requirements. 
+    
+    Please read the *EC2 Instance Types* section earlier in this post for more information.
+
+    I will be using `t2.micro`.
+
+    ![](https://imgur.com/RGcoyvt.jpg)
+
+    Click **Next: Configure Instance Details**.
+
+
+6. In the **Configure Instance Details** page, do the following:
+
+    ![](https://imgur.com/21KcBFC.jpg)
+
+    i. Choose the **Number of instances** you want to create. Useful for EC2's auto-scaling feature.
+
+    ii. In the subnet section, choose which *Availablility Zone (AZ)* you would like to deploy your instance in. The closer AZ you choose to your target users, the better.
+
+    iii. Set **Auto-assign Public IP** to **Enabled** so we may access our instance from anywhere in the world via a Public IP.
+
+    iv. Click **Next: Add Storage**.
+
+6. In the **Add Storage** page, choose a storage type that meets your application's requirements. For more information on this, please read the ***EBS Volume Types*** section earlier in this post.
+
+    ![](https://imgur.com/30c5xtZ.jpg)
+
+7. In the **Add Tags** page, click **Add Tag** and add a tag to describe your instance. This can be useful for management purposes. Click **Next: Configure Security Group** when done.
+
+    ![](https://imgur.com/I3mD8Tf.jpg)
+
+8. In the **Configure Security Group** page, do the following:
+
+    ![](https://imgur.com/VvP63ir.jpg)
+
+    i. Create 3 rules, with types: `SSH`, `HTTP` and `HTTPS`. We will be creating a web server later in this tutorial, hence the need for `HTTP` and `HTTPS`. `SSH` is needed to securely interact with the instance.
+
+    ii. For the `SSH` rule, change to **Source** to **My IP** from the drop-down menu. This will restrict SSH access to your instance from your IP only.
+
+    iii. Click **Review and Launch**.
+
+9. On the **Review Instance Launch page**, thoroughly review the instance details and press **Launch** when done.
+
+10. On the next screen, select **Create a new key pair** and enter a key-pair name, click **Download Key Pair** and then finally click **Launch Instances**. This key-pair will be used later to SSH into the instance.
+
+    ![](https://imgur.com/JCMVRVK.jpg)
+
+## Connecting to an EC2 instance via SSH
+
+1. Ensure you enabled **Security Policy** to allow incoming SSH connections while creating the instance. If not, please see ***Step 9*** of the previous tutorial.
+
+2. From the **EC2 Dashboard**, click **Running instances**.
+
+    ![](https://imgur.com/eOZfyDr.jpg)
+
+3. Find the instance you would like to connect to and note down its **IPv4 Public IP**.
+
+    ![](https://imgur.com/KEsGrFC.jpg)
+
+4. Open a Terminal or Command Prompt in the directory containing your Key Pair you downloaded while creating the instance.
+
+5. In your terminal window, copy the following:
+
+    ```
+    ssh ubuntu@<INSTANCE_IP> -i <YOUR_KEY_PAIR FILE>
+    ```
+
+    Replace `<INSTANCE_IP>` with the IP from **Step 3**.
+
+    Replace `<YOUR_KEY_PAIR FILE>` with the key pair's file name you downloaded while creating the instance.
+
+    This is what the command looks like in my case:
+
+    ![](https://imgur.com/onuM0dX.jpg)
+
+6. Press Enter.
+
+    ![](https://imgur.com/1RB2cG4.jpg)
+
+## Installing and setting up Apache Web server
+
+1. Once you have connected to the EC2 instance, please follow the Apache setup tutorial I posted in a previous blog titled [Learning Linux! (Part 2)](https://usmanjafri.github.io/infosec-blog/linux/2020/04/14/learning-linux-pt-2.html).
+
+2. Once you reach Step 5 of the linked tutorial, please continue here.
+
+3. Navigate to the directory containing your website's publically-accessible data:
+
+    ```
+    cd /var/www/html
+    ```
+
+4. Remove the default `index.html` page:
+
+    ```
+    sudo rm index.html
+    ```
+
+5. Create a new `index.html` page:
+
+    ```
+    sudo nano index.html
+    ```
+
+6. Copy paste the following content:
+    ```
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h1>
+            Hello world!
+        </h1>
+    </html>
+    ```
+7. Press Ctrl + O and then Enter to save the file.
+
+8. Press Ctrl + X to exit the nano editor.
+
+9. Return to the EC2 Instance Dashboard and copy the **Public DNS (IPv4)**.
+
+    ![](https://imgur.com/yF9EOAC.jpg)
+
+10. Paste the DNS record in a web browser, you should see the following:
+
+    ![](https://imgur.com/FMTqzeK.jpg)
+
+## Taking a EBS volume snapshot
+
+1. In the EC2 Dashboard, Click **Snapshots** under the **ELASTIC BLOCK STORE** category.
+
+2. Click **Create Snapshot**.
+
+    ![](https://imgur.com/nqekMvu.jpg)
+
+3. On the next page do the following:
+
+    ![](https://imgur.com/ic2bev8.jpg)
+
+    i. Under **Select resource type** choose **Volume**.
+
+    ii. In the **Volume** drop-down menu, choose the volume whoose snapshot you want to capture.
+
+    iii. Add a **Description** and a **Tag** for easier snapshot management.
+
+    iv. Click **Create Snapshot**.
