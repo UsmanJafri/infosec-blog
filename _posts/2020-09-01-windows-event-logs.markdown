@@ -6,7 +6,7 @@ categories: evidence
 ---
 Hello!
 
-It has been a long, long time since my last blog post and to make this long break worthwhile, I have some very exciting to share in this post! **Today, we will be taking a look at some Event IDs to look out for in Windows Event Logs and the malicious activity these events represent!**
+It has been a long, long time since my last blog post and to make this long break worthwhile, I have some very exciting things to share in this post! **Today, we will be taking a look at some Event IDs to look out for in Windows Event Logs and the malicious activity these events represent!**
 
 ## What are Windows Event Logs
 
@@ -24,7 +24,7 @@ For logs other than Security, there are five event levels, listed in decreasing 
 
 For a security analyst the Security logs are of extreme importance followed closely by the System logs. In the next section we will be discussing a handful of Event IDs that a security personnel should watch out for.
 
-Thanks to excellent Security log encyclopedia at Ultimate Windows Security!
+Thanks to the excellent Security log encyclopedia at [Ultimate Windows Security](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/)!
 
 1. **An attacker attempted a Port Scan:**
 
