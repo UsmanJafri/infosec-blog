@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: YAISB
-email: usman.jafri@ebryx.com
+email: 19100135@lums.edu.pk
 description: Yet Another Information Security Blog! # this means to ignore newlines until "baseurl:"
 baseurl: "/infosec-blog" # the subpath of your site, e.g. /blog
 url: "https://usmanjafri.github.io" # the base hostname & protocol for your site, e.g. http://example.com
