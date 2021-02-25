@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-ONE DAY I WILL UPDATE THIS!
+REMIND ME TO UPDATE THIS! :p
